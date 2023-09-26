@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  wp:
+    container_name: wp
+    build:
+      context: .
+      dockerfile: ./wp/Dockerfile
+    restart: always
+    working_dir: /var/www/html
+    ports:
+      - '8080:80'
+    depends_on:
+      - db
+    volumes:
+      - wpData:/var/www/html
+    environment:
+      TZ: 'Asia/Tokyo'
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: エイゴパークと同じ
+      WORDPRESS_DB_PASSWORD: エイゴパークと同じ
+      WORDPRESS_DB_NAME: エイゴパークと同じ
+      WORDPRESS_TABLE_PREFIX: ribss6_
+      WORDPRESS_DEBUG: 1
+  db:
+    container_name: db
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    volumes:
+      - dbData:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: エイゴパークと同じ
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: エイゴパークと同じ
+      MYSQL_PASSWORD: エイゴパークと同じ
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      MEMORY_LIMIT: 128M
+      UPLOAD_LIMIT: 64M
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8888:80
+
+volumes:
+  dbData:
+    driver: local
+  wpData:
+    driver: local
