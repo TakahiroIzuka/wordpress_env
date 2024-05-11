@@ -1,4 +1,4 @@
-FROM wordpress:php7.4
+FROM wordpress:6.5.2-php8.1-apache
 
 ENV PHP_IDE_CONFIG="serverName=wp"
 
