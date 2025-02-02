@@ -1,11 +1,11 @@
 version: '3.9'
 services:
   wp:
-    container_name: wp
+    container_name: wp_${PRODUCTION_NAME}
     build:
       context: .
       dockerfile: ./wp/Dockerfile
-    restart: always
+    # restart: always
     working_dir: /var/www/html
     ports:
       - '8080:80'
@@ -16,13 +16,13 @@ services:
     environment:
       TZ: 'Asia/Tokyo'
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: エイゴパークと同じ
-      WORDPRESS_DB_PASSWORD: エイゴパークと同じ
-      WORDPRESS_DB_NAME: エイゴパークと同じ
-      WORDPRESS_TABLE_PREFIX: ribss6_
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_TABLE_PREFIX: wp_
       WORDPRESS_DEBUG: 1
   db:
-    container_name: db
+    container_name: db_${PRODUCTION_NAME}
     image: mysql:5.7
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
     volumes:
@@ -30,18 +30,18 @@ services:
     ports:
       - '3306:3306'
     environment:
-      MYSQL_DATABASE: エイゴパークと同じ
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: エイゴパークと同じ
-      MYSQL_PASSWORD: エイゴパークと同じ
+      MYSQL_USER: ${WORDPRESS_DB_USER}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
 
   phpmyadmin:
-    container_name: phpmyadmin
+    container_name: phpmyadmin_${PRODUCTION_NAME}
     image: phpmyadmin/phpmyadmin:latest
     environment:
       MEMORY_LIMIT: 128M
       UPLOAD_LIMIT: 64M
-    restart: always
+    # restart: always
     depends_on:
       - db
     ports:
