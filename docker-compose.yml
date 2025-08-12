@@ -12,7 +12,7 @@ services:
     depends_on:
       - db
     volumes:
-      - wpData:/var/www/html
+      - ./wordpress:/var/www/html
     environment:
       TZ: 'Asia/Tokyo'
       WORDPRESS_DB_HOST: db:3306
@@ -49,6 +49,4 @@ services:
 
 volumes:
   dbData:
-    driver: local
-  wpData:
     driver: local
