@@ -1,4 +1,4 @@
-FROM wordpress:6.5.2-php8.1-apache
+FROM wordpress:php7.4-apache
 
 ENV PHP_IDE_CONFIG="serverName=wp"
 
@@ -17,3 +17,4 @@ ENV LC_ALL ja_JP.UTF-8
 RUN "/bin/bash"
 
 COPY ./wp/xdebug.ini /usr/local/etc/php/conf.d/
+COPY ./wp/uploads.ini /usr/local/etc/php/conf.d/
